@@ -1,17 +1,17 @@
 import frappe
 
-@frappe.whitelist()  
-def check_case_status(case_id):
+@frappe.whitelist()
+def follow_up_case(case_id):
     
-    lost_person = frappe.db.get_value('lost_person', {'name': case_id}, ['status'], as_dict=True)
+    lost_person = frappe.db.get_value('Lost Person', {'name': case_id}, ['case_status'], as_dict=True)
     
     if lost_person:
-        return {'status': lost_person['status']}
+        return {'case_status': lost_person['case_status']}
     
-   
-    founded_person = frappe.db.get_value('founded_person', {'name': case_id}, ['status'], as_dict=True)
+    
+    founded_person = frappe.db.get_value('Founded Person', {'name': case_id}, ['case_status'], as_dict=True)
     
     if founded_person:
-        return {'status': founded_person['status']}
-
-    return None
+        return {'case_status': founded_person['case_status']}
+    
+    return {'error': 'Case not found'}
